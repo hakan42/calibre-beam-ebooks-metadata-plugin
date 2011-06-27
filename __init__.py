@@ -77,6 +77,7 @@ class BeamEbooks(Source):
 
             try:
                 log.info("    Querying: %s" % query)
+                print("    Querying: %s" % query)
                 response = br.open_novisit(query, timeout=timeout)
                 location = response.geturl()
                 log.info("    Redirected to: %r" % location)
@@ -181,7 +182,12 @@ class BeamEbooks(Source):
         # <div CLASS='stil2'> <b>Leo Lukas</b><br><a href='/ebook/19938'><b>PERRY RHODAN-Heftroman 2601: Galaxis in Aufruhr</b></a><br><i>Die ersten Tage in Chanda - Landung auf der Mysteriösen Glutwelt</i></DIV>
         first_result = root.xpath('//div[@class="stil2"]/a')
         if not first_result:
-            print("No ebook line found")
+            print("First pattern, no ebook line found")
+
+        # Try with an p tag in between
+        first_result = root.xpath('//div[@class="stil2"]/p/a')
+        if not first_result:
+            print("Second pattern, no ebook line found")
 
         # print("First result: ", first_result)
         url = first_result[0].get('href').strip()
