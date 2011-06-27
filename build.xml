@@ -13,7 +13,7 @@
 	<target name="install" depends="package">
 		<exec executable="calibre-customize">
 			<arg value="-r" />
-			<arg value="Beam Ebooks Metadata" />
+			<arg value="Beam Ebooks" />
 		</exec>
 
 		<exec executable="calibre-customize">
