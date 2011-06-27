@@ -10,13 +10,13 @@
 		</zip>
 	</target>
 
-	<target name="install" depends="package">
-		<exec executable="calibre-customize">
+	<target name="install" depends="package" >
+		<exec executable="calibre-customize" failonerror="true">
 			<arg value="-r" />
 			<arg value="Beam Ebooks" />
 		</exec>
 
-		<exec executable="calibre-customize">
+		<exec executable="calibre-customize" failonerror="true">
 			<arg value="-a" />
 			<arg value="${ant.project.name}-${version}.zip" />
 		</exec>
