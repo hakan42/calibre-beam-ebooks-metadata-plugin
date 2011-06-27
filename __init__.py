@@ -33,3 +33,9 @@ class BeamEbooks(Source):
     supports_gzip_transfer_encoding = True
 
     BASE_URL = 'http://www.beam-ebooks.de'
+
+    def get_book_url(self, identifiers):
+        beam_ebooks_id = identifiers.get('beam-ebooks', None)
+        if beam_ebooks_id:
+            return ('beam_ebooks', beam_ebooks_id,
+                    '%s/ebook/%s' % (BeamEbooks.BASE_URL, beam_ebooks_id))
