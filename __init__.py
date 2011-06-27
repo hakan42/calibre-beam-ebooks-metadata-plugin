@@ -152,6 +152,12 @@ class BeamEbooks(Source):
                         # title = title[:index_of_dash]
                         index_of_dash = index_of_dash + 3
                         title = title[index_of_dash:]
+                    else:
+                        # Try without spaces, for the old convention
+                        if len(title) > 6:
+                            if title[6] == '-':
+                                title = title[7:]
+
                     msg = "    Perry Rhodan, modified title: %s" % (title)
                     log.info(msg)
                     print(msg)
