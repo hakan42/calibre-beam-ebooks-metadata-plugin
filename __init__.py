@@ -10,8 +10,11 @@ __docformat__ = 'restructuredtext en'
 import time
 from urllib import quote
 
+from lxml.html import fromstring, tostring
+
 from calibre import as_unicode
 from calibre.ebooks.metadata.sources.base import Source
+from calibre.utils.cleantext import clean_ascii_chars
 
 class BeamEbooks(Source):
 
@@ -45,6 +48,7 @@ class BeamEbooks(Source):
             return ('beam_ebooks', beam_ebooks_id,
                     '%s/ebook/%s' % (BeamEbooks.BASE_URL, beam_ebooks_id))
 
+
     def identify(self, log, result_queue, abort, title=None, authors=None, identifiers={}, timeout=30):
         '''
         Note this method will retry without identifiers automatically if no
@@ -66,8 +70,7 @@ class BeamEbooks(Source):
             print("    Found Beam ID %s" % (beam_ebooks_id))
             matches.append('%s/ebook/%s' % (BeamEbooks.BASE_URL, beam_ebooks_id))
         else:
-            query = self.create_query(log, title=title, authors=authors,
-                    identifiers=identifiers)
+            query = self._create_query(log, title=title, authors=authors, identifiers=identifiers)
             if query is None:
                 log.error("    Insufficient metadata to construct query")
                 return
@@ -78,6 +81,25 @@ class BeamEbooks(Source):
                 location = response.geturl()
                 log.info("    Redirected to: %r" % location)
                 matches.append(location)
+
+                try:
+                    raw = response.read().strip()
+                    open('D:\\work\\calibre-dump.html', 'wb').write(raw)
+                    raw = raw.decode('utf-8', errors='replace')
+                    if not raw:
+                        log.error("    Failed to get raw result for query: %r" % query)
+                        return
+                    root = fromstring(clean_ascii_chars(raw))
+                except:
+                    msg = "    Failed to parse beam ebooks page for query: %r" % query
+                    log.exception(msg)
+                    print(msg)
+                    return msg
+
+                # Now grab the first value from the search results, provided the
+                # title and authors appear to be for the same book
+                self._parse_search_results(log, title, authors, root, matches, timeout)
+
             except Exception as e:
                 err = "    Failed to make identify query: %r" % query
                 log.exception(err)
@@ -111,7 +133,7 @@ class BeamEbooks(Source):
         return None
     
 
-    def create_query(self, log, title=None, authors=None, identifiers={}):
+    def _create_query(self, log, title=None, authors=None, identifiers={}):
         log("create_query")
         log("Title: ", title)
         log("Authors: ", authors)
@@ -124,6 +146,7 @@ class BeamEbooks(Source):
             if title != None:
                 # Special handling for Perry Rhodan files
                 if title.startswith("PR"):
+                    title = title.encode('utf-8') if isinstance(title, unicode) else title
                     index_of_dash = title.find(" - ")
                     if index_of_dash > -1:
                         # title = title[:index_of_dash]
@@ -145,3 +168,19 @@ class BeamEbooks(Source):
         # http://www.beam-ebooks.de/suchergebnis.php?Type=&sw=Thanatos&x=1&y=10
 
         return q
+
+    def _parse_search_results(self, log, orig_title, orig_authors, root, matches, timeout):
+
+        # result_url = BeamEbooks.BASE_URL + first_result_url_node[0]
+        # <div CLASS='stil2'> <b>Leo Lukas</b><br><a href='/ebook/19938'><b>PERRY RHODAN-Heftroman 2601: Galaxis in Aufruhr</b></a><br><i>Die ersten Tage in Chanda - Landung auf der Mysteriösen Glutwelt</i></DIV>
+        first_result = root.xpath('//div[@class="stil2"]/a')
+        if not first_result:
+            print("No ebook line found")
+
+        # print("First result: ", first_result)
+        url = first_result[0].get('href').strip()
+        # print("Extracted URL ", url)
+
+        if url.find("/ebook/") > -1:
+            result_url = "%s/%s" % (BeamEbooks.BASE_URL, url)
+            matches.append(result_url)
