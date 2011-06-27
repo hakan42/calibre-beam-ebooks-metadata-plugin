@@ -84,7 +84,7 @@ class BeamEbooks(Source):
 
                 try:
                     raw = response.read().strip()
-                    open('D:\\work\\calibre-dump.html', 'wb').write(raw)
+                    # open('D:\\work\\calibre-dump.html', 'wb').write(raw)
                     raw = raw.decode('utf-8', errors='replace')
                     if not raw:
                         log.error("    Failed to get raw result for query: %r" % query)
