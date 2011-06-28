@@ -179,25 +179,29 @@ class BeamEbooks(Source):
         return q
 
     def _parse_search_results(self, log, orig_title, orig_authors, root, matches, timeout):
+        url = None
 
-        # result_url = BeamEbooks.BASE_URL + first_result_url_node[0]
         # <div CLASS='stil2'> <b>Leo Lukas</b><br><a href='/ebook/19938'><b>PERRY RHODAN-Heftroman 2601: Galaxis in Aufruhr</b></a><br><i>Die ersten Tage in Chanda - Landung auf der Mysteriösen Glutwelt</i></DIV>
-        first_result = root.xpath('//div[@class="stil2"]/a')
-        if not first_result:
-            print("First pattern, no ebook line found")
+        if url == None:
+            first_result = root.xpath('//div[@class="stil2"]/a')
+            if first_result:
+                url = first_result[0].get('href').strip()
+            else:
+                print("First pattern, no ebook line found")
 
         # Try with an p tag in between
-        first_result = root.xpath('//div[@class="stil2"]/p/a')
-        if not first_result:
-            print("Second pattern, no ebook line found")
-
-        # print("First result: ", first_result)
-        url = first_result[0].get('href').strip()
-        # print("Extracted URL ", url)
+        # <div CLASS='stil2'> <b>K. H. Scheer</b><br><a href='/ebook/15156'><b>Der Einsame der Zeit - Perry Rhodan 50</b></a><br><i>Anfang eines neuen, faszinierenden Abenteuers – Höhepunkt der Perry-Rhodan-Serie</i></DIV> 
+        if url == None:
+            first_result = root.xpath('//div[@class="stil2"]/p/a')
+            if first_result:
+                url = first_result[0].get('href').strip()
+            else:
+                print("First pattern, no ebook line found")
 
         if url.find("/ebook/") > -1:
             result_url = "%s/%s" % (BeamEbooks.BASE_URL, url)
             matches.append(result_url)
+
 
 if __name__ == '__main__': # tests
     # To run these test use:
@@ -244,7 +248,17 @@ if __name__ == '__main__': # tests
 #                    series_test('Perry Rhodan, Stardust', 2500.0)
                 ] 
             ),
-         
+
+            (
+                # A Book without beam ebooks id, searched by title
+                { 'title':'Der Einsame der Zeit'},
+                [
+                    title_test('PR0050 - Der Einsame der Zeit', exact=False),
+                    authors_test(['K. H. Scheer']),
+                    series_test('Perry Rhodan, Atlan und Arkon', 50.0)
+                ] 
+            ),
+
             (
                 # A Book without beam ebooks id, searched by title
                 { 'title':'Ding der Welt'},
