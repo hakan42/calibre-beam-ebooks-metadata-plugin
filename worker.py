@@ -116,15 +116,15 @@ class Worker(Thread): # Get details
 
 
     def parse_title(self, root):
-        title = None
-
-        first_result = root.xpath('//table/tbody/tr/td/div/h1/strong')
-        if not first_result:
-            print("First pattern, no title line found")
+        # nodes = root.xpath('./tr/td/div/h1/strong')
+        nodes = root.xpath('//tr/td/div/h1/strong')
+        if not nodes:
+            print("Title pattern, no title line found")
+            title = None
         else:
-            print("First pattern content ", first_result[0].text_content().strip())
-
-        title = "PR0007 - Invasion aus dem All"
+            for i, node in enumerate(nodes):
+                print("Title pattern %s content %s " % (i, node.text_content().strip()))
+                title = node.text_content().strip()
 
         return title
 
