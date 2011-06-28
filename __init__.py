@@ -196,3 +196,20 @@ class BeamEbooks(Source):
         if url.find("/ebook/") > -1:
             result_url = "%s/%s" % (BeamEbooks.BASE_URL, url)
             matches.append(result_url)
+
+if __name__ == '__main__': # tests
+    # To run these test use:
+    # calibre-debug -e __init__.py
+    from calibre.ebooks.metadata.sources.test import (test_identify_plugin, title_test, authors_test)
+    test_identify_plugin(BeamEbooks.name,
+        [
+            (
+                # A book with a beam ebooks id
+                {'identifiers':{'beam-ebooks': '1278'}, 'title':'Invasion aus dem All', 'authors':['Clark Darlton']},
+                [
+                    title_test('PR0007 - Invasion aus dem All', exact=True),
+                    authors_test(['Clark Darlton']),
+                ]
+            ),
+        ])
+

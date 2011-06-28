@@ -10,7 +10,7 @@
 		</zip>
 	</target>
 
-	<target name="install" depends="package" >
+	<target name="install" depends="package">
 		<exec executable="calibre-customize" failonerror="true">
 			<arg value="-r" />
 			<arg value="Beam Ebooks" />
@@ -28,4 +28,10 @@
 		</exec>
 	</target>
 
+	<target name="test" depends="install">
+		<exec executable="calibre-debug" failonerror="true">
+			<arg value="-e" />
+			<arg value="__init__.py" />
+		</exec>
+	</target>
 </project>
