@@ -90,10 +90,11 @@ class Worker(Thread): # Get details
             self.beam_ebooks_id = None
 
         try:
-            self.title = self.parse_title(root)
+            (self.title, self.series_index) = self.parse_title(root)
         except:
             self.log.exception('Error parsing title for url: %r' % self.url)
             self.title = None
+            self.series_index = None
 
         try:
             self.authors = self.parse_authors(root)
@@ -103,6 +104,10 @@ class Worker(Thread): # Get details
 
         mi = Metadata(self.title, self.authors)
         mi.set_identifier('beam-ebooks', self.beam_ebooks_id)
+
+        if self.series_index:
+            mi.series = "Perry Rhodan"
+            mi.series_index = float(self.series_index)
 
         mi.source_relevance = self.relevance
 
@@ -116,11 +121,13 @@ class Worker(Thread): # Get details
 
 
     def parse_title(self, root):
+        title = None
+        series_index = None
+
         # nodes = root.xpath('./tr/td/div/h1/strong')
         nodes = root.xpath('//tr/td/div/h1/strong')
         if not nodes:
             print("Title pattern, no title line found")
-            title = None
         else:
             for i, node in enumerate(nodes):
                 print("Title pattern %s content %s " % (i, node.text_content().strip()))
@@ -137,10 +144,7 @@ class Worker(Thread): # Get details
             while len(series_index) < 4:
                 series_index = "0" + series_index
             print("    Series Index: '%s'" % (series_index))
-            
             title = "PR" + series_index + " - " + prefix
-            
-            # TODO: Set series number
 
         pr_series_title = "PERRY RHODAN-Heftroman "
         index_of_pr = title.find(pr_series_title)
@@ -154,12 +158,9 @@ class Worker(Thread): # Get details
             print("    Series-Index-1: '%s'" % (series_index))
             series_index = series_index[len(series_index) - 6 : len(series_index) - 2]
             print("    Series-Index-2: '%s'" % (series_index))
-
             title = "PR" + series_index + " - " + postfix
-            
-            # TODO: Set series number
 
-        return title
+        return (title, series_index)
 
 
     def parse_authors(self, root):

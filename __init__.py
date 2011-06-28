@@ -200,7 +200,7 @@ class BeamEbooks(Source):
 if __name__ == '__main__': # tests
     # To run these test use:
     # calibre-debug -e __init__.py
-    from calibre.ebooks.metadata.sources.test import (test_identify_plugin, title_test, authors_test)
+    from calibre.ebooks.metadata.sources.test import (test_identify_plugin, title_test, authors_test, series_test)
     test_identify_plugin(BeamEbooks.name,
         [
             (
@@ -209,6 +209,7 @@ if __name__ == '__main__': # tests
                 [
                     title_test('PR0007 - Invasion aus dem All', exact=True),
                     authors_test(['Clark Darlton']),
+                    series_test('Perry Rhodan', 7.0)
                 ]
             ),
 
@@ -218,6 +219,7 @@ if __name__ == '__main__': # tests
                 [
                     title_test('PR2601 - Galaxis in Aufruhr', exact=True),
                     # authors_test(['Clark Darlton']),
+                    series_test('Perry Rhodan', 2601.0)
                 ]
             ),
         ])
