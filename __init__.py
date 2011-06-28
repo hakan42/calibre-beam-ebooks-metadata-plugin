@@ -27,9 +27,9 @@ class BeamEbooks(Source):
 
     capabilities = frozenset(['identify'])
         # , 'cover'
-    touched_fields = frozenset(['identifier:beam-ebooks'])
-        # 'title'
-        # 'authors', 
+    touched_fields = frozenset(['identifier:beam-ebooks',
+                                'title',
+                                'authors'])
         # 'identifier:isbn',
         # 'rating',
         # 'comments',
