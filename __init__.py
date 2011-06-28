@@ -148,7 +148,7 @@ class BeamEbooks(Source):
             if title != None:
                 # Special handling for Perry Rhodan files
                 if title.startswith("PR"):
-                    title = title.encode('utf-8') if isinstance(title, unicode) else title
+                    # title = title.encode('utf-8') if isinstance(title, unicode) else title
                     index_of_dash = title.find(" - ")
                     if index_of_dash > -1:
                         # title = title[:index_of_dash]
@@ -164,7 +164,8 @@ class BeamEbooks(Source):
                     log.info(msg)
                     print(msg)
 
-                title = title.encode('utf-8') if isinstance(title, unicode) else title
+                # title = title.encode('utf-8') if isinstance(title, unicode) else title
+                title = title.encode('iso-8859-1')
                 q = '%s/suchergebnis.php?Type=Title&sw=%s&x=0&y=0' % (BeamEbooks.BASE_URL, quote(title))
 
         # Not sure if searching for authors is a good idea here...
@@ -231,6 +232,16 @@ if __name__ == '__main__': # tests
                     title_test('PR2500 - Projekt Saturn', exact=True),
                     authors_test(['Frank Borsch']),
                     series_test('Perry Rhodan, Stardust', 2500.0)
+                ] 
+            ),
+
+            (
+                # A Book with beam ebooks id, for unicode testing...
+                { 'identifiers':{'beam-ebooks': '12713'}, },
+                [
+#                    title_test('PR2500 - Projekt Saturn', exact=True),
+                    authors_test(['Clark Darlton']),
+#                    series_test('Perry Rhodan, Stardust', 2500.0)
                 ] 
             ),
          

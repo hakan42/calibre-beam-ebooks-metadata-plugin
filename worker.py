@@ -69,7 +69,8 @@ class Worker(Thread): # Get details
                 self.log.exception(msg)
             return
 
-        raw = raw.decode('utf-8', errors='replace')
+        # raw = raw.decode('utf-8', errors='replace')
+        raw = raw.decode('iso-8859-1', errors='replace')
         open('D:\\work\\calibre-dump-book-details.html', 'wb').write(raw)
 
         if '<title>404 - ' in raw:
@@ -77,7 +78,8 @@ class Worker(Thread): # Get details
             return
 
         try:
-            root = fromstring(clean_ascii_chars(raw))
+            # root = fromstring(clean_ascii_chars(raw))
+            root = fromstring(raw)
         except:
             msg = 'Failed to parse beam ebooks details page: %r' % self.url
             self.log.exception(msg)
@@ -159,6 +161,14 @@ class Worker(Thread): # Get details
             series_index = series_index[len(series_index) - 6 : len(series_index) - 2]
             print("    Series-Index-2: '%s'" % (series_index))
             title = "PR" + series_index + " - " + postfix
+
+        if title != None:
+            # print("Plain '%s'" % title)
+            # print("UTF-8 '%s'" % title.encode('utf-8'))
+            # title = title.encode('utf-8')
+            title = title.decode('utf-8')
+            # title = title.decode('iso-8859-1')
+            # title = title.encode('iso-8859-1')
 
         return (title, series_index)
 
