@@ -215,11 +215,21 @@ if __name__ == '__main__': # tests
 
             (
                 # A Perry Rhodan book with a beam ebooks id, new naming convention
-                {'identifiers':{'beam-ebooks': '19938'}, 'title':' PERRY RHODAN-Heftroman 2601: Galaxis in Aufruhr', 'authors':['Leo Lukas']},
+                {'identifiers':{'beam-ebooks': '19938'}, 'title':'PERRY RHODAN-Heftroman 2601: Galaxis in Aufruhr', 'authors':['Leo Lukas']},
                 [
                     title_test('PR2601 - Galaxis in Aufruhr', exact=True),
-                    # authors_test(['Clark Darlton']),
+                    authors_test(['Leo Lukas']),
                     series_test('Perry Rhodan', 2601.0)
+                ]
+            ),
+
+            (
+                # A book with multiple authors
+                {'identifiers':{'beam-ebooks': '19539'}, 'title':'Ein Schneller Sieg', 'authors':['Foo', 'Bar']},
+                [
+                    title_test('Ein Schneller Sieg', exact=True),
+                    authors_test(['David Weber', 'Dietmar Schmidt']),
+                    # series_test('Perry Rhodan', 2601.0)
                 ]
             ),
         ])

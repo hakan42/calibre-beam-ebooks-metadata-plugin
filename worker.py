@@ -124,13 +124,12 @@ class Worker(Thread): # Get details
         title = None
         series_index = None
 
-        # nodes = root.xpath('./tr/td/div/h1/strong')
         nodes = root.xpath('//tr/td/div/h1/strong')
         if not nodes:
             print("Title pattern, no title line found")
         else:
             for i, node in enumerate(nodes):
-                print("Title pattern %s content %s " % (i, node.text_content().strip()))
+                # print("Title pattern %s content %s " % (i, node.text_content().strip()))
                 title = node.text_content().strip()
 
         # TODO: title munging should be configurable
@@ -164,8 +163,28 @@ class Worker(Thread): # Get details
 
 
     def parse_authors(self, root):
-        author = None
+        authors = []
 
-        author = "Clark Darlton"
+        nodes = root.xpath('//tr/td/p/a')
+        if not nodes:
+            print("Authors pattern 1, no authors line found")
+        else:
+            for i, node in enumerate(nodes):
+                url = node.get('href').strip()
+                # print("Authors pattern %s content %s, %s " % (i, node.text_content().strip(), url))
+                if url.find('/autoreninfo.php') > -1:
+                    author = node.text_content().strip()
+                    authors.append(author)
 
-        return [author]
+        nodes = root.xpath('//tr/td/a')
+        if not nodes:
+            print("Authors pattern 2, no authors line found")
+        else:
+            for i, node in enumerate(nodes):
+                url = node.get('href').strip()
+                # print("Authors pattern %s content %s, %s " % (i, node.text_content().strip(), url))
+                if url.find('/autoreninfo.php') > -1:
+                    author = node.text_content().strip()
+                    authors.append(author)
+
+        return authors
