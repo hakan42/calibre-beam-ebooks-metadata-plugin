@@ -1,2 +1,5 @@
+[B]Version 1.1.0[/B] - 31 Dec 2011
+???
+
 [B]Version 1.0.0[/B] - 28 Jun 2011
 Initial release of plugin

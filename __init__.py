@@ -23,7 +23,7 @@ class BeamEbooks(Source):
     description = _('Downloads Metadata and covers from Beam Ebooks')
     supported_platforms = ['windows', 'osx', 'linux']
     author = 'Hakan Tandogan'
-    version = (1, 0, 0)
+    version = (1, 1, 0)
     minimum_calibre_version = (0, 8, 4)
 
     capabilities = frozenset(['identify'])
