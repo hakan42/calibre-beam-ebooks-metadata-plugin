@@ -126,6 +126,22 @@ class Worker(Thread): # Get details
                 print("Title pattern %s content %s " % (i, node.text_content().strip()))
                 title = node.text_content().strip()
 
+        # TODO: title munging should be configurable
+        pr_series_title = " - Perry Rhodan "
+        index_of_pr = title.find(pr_series_title)
+        if index_of_pr > -1:
+            prefix = title[:index_of_pr]
+            print("    Prefix: '%s'" % (prefix))
+            index_of_pr = index_of_pr + len(pr_series_title)
+            postfix = title[index_of_pr:]
+            while len(postfix) < 4:
+                postfix = "0" + postfix
+            print("    Postfix: '%s'" % (postfix))
+            
+            title = "PR" + postfix + " - " + prefix
+            
+            # TODO: Set series number
+
         return title
 
 
