@@ -106,8 +106,9 @@ class Worker(Thread): # Get details
         mi.set_identifier('beam-ebooks', self.beam_ebooks_id)
 
         if self.series_index:
-            mi.series = "Perry Rhodan"
             mi.series_index = float(self.series_index)
+        
+        self._determine_perry_rhodan_cycle_name(mi)
 
         mi.source_relevance = self.relevance
 
@@ -188,3 +189,78 @@ class Worker(Thread): # Get details
                     authors.append(author)
 
         return authors
+
+    def _determine_perry_rhodan_cycle_name(self, mi):
+        if self.title.find("PR") == 0 and self.series_index > 0:
+            mi.series = "Perry Rhodan"
+            if mi.series_index >= 1 and mi.series_index <= 49:
+                mi.series = "Perry Rhodan, Die dritte Macht"
+            if mi.series_index >= 50 and mi.series_index <= 99:
+                mi.series = "Perry Rhodan, Atlan und Arkon"
+            if mi.series_index >= 100 and mi.series_index <= 149:
+                mi.series = "Perry Rhodan, Die Posbis"
+            if mi.series_index >= 150 and mi.series_index <= 199:
+                mi.series = "Perry Rhodan, Das zweite Imperium"
+            if mi.series_index >= 200 and mi.series_index <= 299:
+                mi.series = "Perry Rhodan, Die Meister der Insel"
+            if mi.series_index >= 300 and mi.series_index <= 399:
+                mi.series = "Perry Rhodan, M 87"
+            if mi.series_index >= 400 and mi.series_index <= 499:
+                mi.series = "Perry Rhodan, Die Cappins"
+            if mi.series_index >= 500 and mi.series_index <= 569:
+                mi.series = "Perry Rhodan, Der Schwarm"
+            if mi.series_index >= 570 and mi.series_index <= 599:
+                mi.series = "Perry Rhodan, Die Altmutanten"
+            if mi.series_index >= 600 and mi.series_index <= 649:
+                mi.series = "Perry Rhodan, Das kosmische Schachspiel"
+            if mi.series_index >= 650 and mi.series_index <= 699:
+                mi.series = "Perry Rhodan, Das Konzil"
+            if mi.series_index >= 700 and mi.series_index <= 799:
+                mi.series = "Perry Rhodan, Die Aphilie"
+            if mi.series_index >= 800 and mi.series_index <= 867:
+                mi.series = "Perry Rhodan, Bardioc"
+            if mi.series_index >= 868 and mi.series_index <= 899:
+                mi.series = "Perry Rhodan, PAN-THAU-RA"
+            if mi.series_index >= 900 and mi.series_index <= 999:
+                mi.series = "Perry Rhodan, Die Kosmischen Burgen"
+            if mi.series_index >= 1000 and mi.series_index <= 1099:
+                mi.series = "Perry Rhodan, Die Kosmische Hanse"
+            if mi.series_index >= 1100 and mi.series_index <= 1199:
+                mi.series = "Perry Rhodan, Die Endlose Armada"
+            if mi.series_index >= 1200 and mi.series_index <= 1299:
+                mi.series = "Perry Rhodan, Chronofossilien"
+            if mi.series_index >= 1300 and mi.series_index <= 1349:
+                mi.series = "Perry Rhodan, Die Gänger des Netzes"
+            if mi.series_index >= 1400 and mi.series_index <= 1499:
+                mi.series = "Perry Rhodan, Die Cantaro"
+            if mi.series_index >= 1500 and mi.series_index <= 1599:
+                mi.series = "Perry Rhodan, Die Linguiden"
+            if mi.series_index >= 1600 and mi.series_index <= 1649:
+                mi.series = "Perry Rhodan, Die Ennox"
+            if mi.series_index >= 1650 and mi.series_index <= 1699:
+                mi.series = "Perry Rhodan, Die Große Leere"
+            if mi.series_index >= 1700 and mi.series_index <= 1749:
+                mi.series = "Perry Rhodan, Die Ayindi"
+            if mi.series_index >= 1800 and mi.series_index <= 1875:
+                mi.series = "Perry Rhodan, Die Tolkander"
+            if mi.series_index >= 1876 and mi.series_index <= 1899:
+                mi.series = "Perry Rhodan, Die Heliotischen Bollwerke"
+            if mi.series_index >= 1900 and mi.series_index <= 1949:
+                mi.series = "Perry Rhodan, Der Sechste Bote"
+            if mi.series_index >= 1950 and mi.series_index <= 1999:
+                mi.series = "Perry Rhodan, MATERIA"
+            if mi.series_index >= 2000 and mi.series_index <= 2099:
+                mi.series = "Perry Rhodan, Die Solare Residenz"
+            if mi.series_index >= 2100 and mi.series_index <= 2199:
+                mi.series = "Perry Rhodan, Das Reich Tradom"
+            if mi.series_index >= 2200 and mi.series_index <= 2299:
+                mi.series = "Perry Rhodan, Der Sternenozean"
+            if mi.series_index >= 2300 and mi.series_index <= 2399:
+                mi.series = "Perry Rhodan, TERRANOVA"
+            if mi.series_index >= 2400 and mi.series_index <= 2499:
+                mi.series = "Perry Rhodan, Negaspähre"
+            if mi.series_index >= 2500 and mi.series_index <= 2599:
+                mi.series = "Perry Rhodan, Stardust"
+            elif mi.series_index >= 2600 and mi.series_index < 2699:
+                mi.series = "Perry Rhodan, Neuroversum"
+
