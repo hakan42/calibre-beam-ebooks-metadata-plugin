@@ -204,11 +204,20 @@ if __name__ == '__main__': # tests
     test_identify_plugin(BeamEbooks.name,
         [
             (
-                # A book with a beam ebooks id
+                # A Perry Rhodan book with a beam ebooks id, old naming convention
                 {'identifiers':{'beam-ebooks': '12748'}, 'title':'Invasion aus dem All', 'authors':['Clark Darlton']},
                 [
                     title_test('PR0007 - Invasion aus dem All', exact=True),
                     authors_test(['Clark Darlton']),
+                ]
+            ),
+
+            (
+                # A Perry Rhodan book with a beam ebooks id, new naming convention
+                {'identifiers':{'beam-ebooks': '19938'}, 'title':' PERRY RHODAN-Heftroman 2601: Galaxis in Aufruhr', 'authors':['Leo Lukas']},
+                [
+                    title_test('PR2601 - Galaxis in Aufruhr', exact=True),
+                    # authors_test(['Clark Darlton']),
                 ]
             ),
         ])

@@ -133,12 +133,29 @@ class Worker(Thread): # Get details
             prefix = title[:index_of_pr]
             print("    Prefix: '%s'" % (prefix))
             index_of_pr = index_of_pr + len(pr_series_title)
-            postfix = title[index_of_pr:]
-            while len(postfix) < 4:
-                postfix = "0" + postfix
-            print("    Postfix: '%s'" % (postfix))
+            series_index = title[index_of_pr:]
+            while len(series_index) < 4:
+                series_index = "0" + series_index
+            print("    Series Index: '%s'" % (series_index))
             
-            title = "PR" + postfix + " - " + prefix
+            title = "PR" + series_index + " - " + prefix
+            
+            # TODO: Set series number
+
+        pr_series_title = "PERRY RHODAN-Heftroman "
+        index_of_pr = title.find(pr_series_title)
+        if index_of_pr > -1:
+            index_of_pr = index_of_pr + len(pr_series_title)
+            # TODO: Test this again with a three-digit issue number
+            index_of_pr = index_of_pr + 6
+            postfix = title[index_of_pr:]
+            print("    Postfix: '%s'" % (postfix))
+            series_index = title[:index_of_pr]
+            print("    Series-Index-1: '%s'" % (series_index))
+            series_index = series_index[len(series_index) - 6 : len(series_index) - 2]
+            print("    Series-Index-2: '%s'" % (series_index))
+
+            title = "PR" + series_index + " - " + postfix
             
             # TODO: Set series number
 
