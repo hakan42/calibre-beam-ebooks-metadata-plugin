@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 from __future__ import (unicode_literals, division, absolute_import,
                         print_function)
@@ -221,6 +222,26 @@ if __name__ == '__main__': # tests
                     authors_test(['Leo Lukas']),
                     series_test('Perry Rhodan', 2601.0)
                 ]
+            ),
+         
+            (
+                # A Book without beam ebooks id, searched by title
+                { 'title':'Projekt Saturn'},
+                [
+                    title_test('PR2500 - Projekt Saturn', exact=True),
+                    authors_test(['Frank Borsch']),
+                    series_test('Perry Rhodan', 2500.0)
+                ] 
+            ),
+         
+            (
+                # A Book without beam ebooks id, searched by title
+                { 'title':'Ding der Welt'},
+                [
+                    # utf-8 for german umlauts does not work yet
+                    # title_test('Das älteste Ding der Welt', exact=False),
+                    authors_test(['Willy Seidel']),
+                ] 
             ),
 
             (
