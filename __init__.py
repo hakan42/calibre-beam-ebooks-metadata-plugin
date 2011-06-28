@@ -210,7 +210,7 @@ if __name__ == '__main__': # tests
                 [
                     title_test('PR0007 - Invasion aus dem All', exact=True),
                     authors_test(['Clark Darlton']),
-                    series_test('Perry Rhodan', 7.0)
+                    series_test('Perry Rhodan, Die dritte Macht', 7.0)
                 ]
             ),
 
@@ -220,7 +220,7 @@ if __name__ == '__main__': # tests
                 [
                     title_test('PR2601 - Galaxis in Aufruhr', exact=True),
                     authors_test(['Leo Lukas']),
-                    series_test('Perry Rhodan', 2601.0)
+                    series_test('Perry Rhodan, Neuroversum', 2601.0)
                 ]
             ),
          
@@ -230,7 +230,7 @@ if __name__ == '__main__': # tests
                 [
                     title_test('PR2500 - Projekt Saturn', exact=True),
                     authors_test(['Frank Borsch']),
-                    series_test('Perry Rhodan', 2500.0)
+                    series_test('Perry Rhodan, Stardust', 2500.0)
                 ] 
             ),
          
