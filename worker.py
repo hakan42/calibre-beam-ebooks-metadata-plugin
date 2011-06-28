@@ -71,7 +71,7 @@ class Worker(Thread): # Get details
 
         # raw = raw.decode('utf-8', errors='replace')
         raw = raw.decode('iso-8859-1', errors='replace')
-        open('D:\\work\\calibre-dump-book-details.html', 'wb').write(raw)
+        # open('D:\\work\\calibre-dump-book-details.html', 'wb').write(raw)
 
         if '<title>404 - ' in raw:
             self.log.error('URL malformed: %r' % self.url)
@@ -116,7 +116,8 @@ class Worker(Thread): # Get details
 
         self.plugin.clean_downloaded_metadata(mi)
 
-        self.result_queue.put(mi)
+        print(mi)
+        self.result_queue.put(mi)        
 
 
     def parse_beam_ebooks_id(self, url):
